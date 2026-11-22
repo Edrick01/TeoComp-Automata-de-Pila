@@ -46,6 +46,7 @@ public class PanelAutomata extends JPanel {
             }
             repaint();
         });
+        timerRespiracion.start();
     }
 	
 	@Override
@@ -89,14 +90,14 @@ public class PanelAutomata extends JPanel {
 	        diametro - (margen * 2)
 				 );
 	    
-	    colorearEtiquetas(g2d,'a','s',centroS_X-80, centroY-radio-10);
+		colorearEtiquetas(g2d,'a','s',centroS_X-80, centroY-radio-10);
 	    colorearEtiquetas(g2d,'b','s',centroS_X+33, centroY-radio-10);
 	    colorearEtiquetas(g2d,'a','f',centroF_X-80, centroY-radio-10);
 	    colorearEtiquetas(g2d,'b','f',centroF_X+33, centroY-radio-10);
 	    colorearEtiquetas(g2d,'v','v',(getWidth() / 2) -20, centroY+20);
 	    
 	    dibujarTransicion(g2d,"ab",'s', centroS_X, centroY,radio);
-	    dibujarTransicion(g2d,"ab",'s', centroF_X, centroY,radio);
+	    dibujarTransicion(g2d,"ab",'f', centroF_X, centroY,radio);
 	    
 	    dibujartransicionSF(g2d,centroS_X, centroY,radio,centroF_X);
 	    
@@ -157,23 +158,27 @@ public class PanelAutomata extends JPanel {
 	// REPARAR LAS ANIMACIONES
 	public void colorearEtiquetas(Graphics2D g2d,Character etiqueta,Character estado, int x, int y) {
 		g2d.setFont(new Font("SansSerif",Font.PLAIN, 15));
-		//estado actual n es porque se anima la etiqueta
-		if (this.etiqueta.equals(etiqueta)) {
-            double pulso = (Math.sin(fase) + 1.0) / 2.0;
-            float grosor = 2.0f + (float) (pulso * 3.5f);
-            g2d.setStroke(new BasicStroke(grosor));
+
+		if (this.etiqueta.equals(etiqueta) && estado.equals(this.estadoActual)) {
+            double pulso = (Math.sin(fase*2.0) + 1.0) / 2.0;
+            float grosor =13.0f + (float) (pulso*2.0);
+            g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, grosor));
 			if (enError) {
 				g2d.setColor(errorFuerte); 
 			}
 			else {
-				g2d.setColor(Color.BLACK); 
+				g2d.setColor(estadoFuerte); 
 
 			}
             
-            if (estado.equals(this.estadoActual) && estado.equals('s')) {
+            if (estado.equals('s')) {
+    			System.out.println("estados: " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
+
     			g2d.drawString(String.valueOf(etiqueta)+" / \u03b5 / "+String.valueOf(etiqueta), x, y);
             }
-            else if (estado.equals(this.estadoActual)){
+            else if (estado.equals('f')){
+    			System.out.println("estados: " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
+
         		g2d.drawString(String.valueOf(etiqueta)+" / "+ String.valueOf(etiqueta)+" / \u03b5", x, y);
             }
             else if (this.etiqueta.equals('v')){
@@ -196,7 +201,8 @@ public class PanelAutomata extends JPanel {
             }
 		}
 		
-		 g2d.setColor(Color.BLACK);
+		g2d.setColor(Color.BLACK);
+		g2d.setStroke(new BasicStroke(2));
 		 
 	}
 	
@@ -205,34 +211,39 @@ public class PanelAutomata extends JPanel {
 		Character aux = etiquetas.charAt(0);
 		Character aux2 = etiquetas.charAt(1);
 		if (estado.equals(estadoActual) && (aux.equals(this.etiqueta) || aux2.equals(this.etiqueta))) {
-            double pulso = (Math.sin(fase) + 1.0) / 2.0;
-            float grosor = 2.0f + (float) (pulso * 3.5f);
+			System.out.println("estados: trancisiondibujo  " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
+			double pulso = (Math.sin(fase*2.0) + 1.0) / 2.0;
+            float grosor = 2.0f + (float) (pulso * 2.4f);
             g2d.setStroke(new BasicStroke(grosor));
 			if (enError) {
 				g2d.setColor(errorFuerte); 
 			}
 		}
+		
 		g2d.setColor(Color.BLACK);
 		g2d.drawArc(x-27,y-2*radio-8,55,90,-10,200);
 		g2d.drawLine(x+20, y-radio, x+28,y-15 );
 		g2d.drawLine(x+28, y-15, x+35,y-radio );
+		g2d.setStroke(new BasicStroke(2));
+
 	}
 	
 // x1 centro S
 	public void dibujartransicionSF(Graphics2D g2d,int x1, int y,int radio,int x2) {
 		if (etiqueta.equals('v')) {
-            double pulso = (Math.sin(fase) + 1.0) / 2.0;
-            float grosor = 2.0f + (float) (pulso * 3.5f);
+            double pulso = (Math.sin(fase*2.0) + 1.0) / 2.0;
+            float grosor = 2.0f + (float) (pulso * 2.4f);
             g2d.setStroke(new BasicStroke(grosor));
 			if (enError) {
 				g2d.setColor(errorFuerte); 
 			}	
 		}
-		
 		g2d.setColor(Color.BLACK);
 		g2d.drawLine(x1+radio,y, x2-radio, y);
 		g2d.drawLine(x2-radio-10, y-10, x2-radio, y);
 		g2d.drawLine(x2-radio-10, y+10, x2-radio, y);
+		g2d.setStroke(new BasicStroke(2));
+
 	}
 	
 	public void colorearFlechas() {
@@ -245,7 +256,9 @@ public class PanelAutomata extends JPanel {
 		if (timerFlecha != null && timerFlecha.isRunning()) {
             timerFlecha.stop();
         }
-        timerRespiracion.stop();
+		if (!timerRespiracion.isRunning()) {
+			timerRespiracion.start();
+        }
         fase = 0.0;
 
 		if (!etiqueta.equals('n')) {
@@ -253,9 +266,9 @@ public class PanelAutomata extends JPanel {
 			repaint();
 			//this.etiqueta='n';
 			
-			timerFlecha = new Timer(600, e -> {
+			timerFlecha = new Timer(1000, e -> {
                 this.etiqueta = 'n';
-                timerRespiracion.start(); // Empieza a respirar el estado destino
+                //timerRespiracion.start(); // Empieza a respirar el estado destino
                 repaint();
             });
             timerFlecha.setRepeats(false);
@@ -277,7 +290,7 @@ public class PanelAutomata extends JPanel {
 		}
 		else {
 			System.out.println("repindtando");
-			timerRespiracion.start();
+			//timerRespiracion.start();
 			repaint();
 		}
 	}

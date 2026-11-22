@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 import modelo.Algoritmo;
+import panelPila.PanelPila;
 import panelautomata.PanelAutomata;
 import vista.*;
 public class ControlVista implements ActionListener{
@@ -13,10 +14,12 @@ public class ControlVista implements ActionListener{
 	private PanelAutomata panelAnimacion;
 	private VistaPrincipal vista;
 	private Algoritmo algoritmo;
-	public ControlVista(JPanel panelAnimacion ,VistaPrincipal vista,Algoritmo algoritmo) {
+	private PanelPila paneldePila;
+	public ControlVista(JPanel panelAnimacion ,JPanel panelPila,VistaPrincipal vista,Algoritmo algoritmo) {
 		this.panelAnimacion=(PanelAutomata) panelAnimacion;
 		this.vista=vista;
 		this.algoritmo=algoritmo;
+		this.paneldePila=(PanelPila) panelPila;
 		this.vista.getBtnSiguiente().addActionListener(this);
 		this.vista.getCadenaText().addActionListener(this);
 		this.vista.getBtnLeerCadena().addActionListener(this);
@@ -43,7 +46,9 @@ public class ControlVista implements ActionListener{
 			else {
 				vista.getLblEstadoCadena().setText("Reconociendo Cadena");
 				panelAnimacion.setEstados('s', 'n');
-				panelAnimacion.setAnimacion();			
+				panelAnimacion.setAnimacion();	
+				paneldePila.reiniciar();
+				this.vista.getBtnSiguiente().setEnabled(true);
 
 			}
 		}
@@ -54,16 +59,25 @@ public class ControlVista implements ActionListener{
 	
 	public void siguientePaso() {
 		System.out.println("hoal");
-		if (algoritmo.getIndex()+1>=algoritmo.getCadena().length()) {
+		if (algoritmo.getIndex()+1>algoritmo.getCadena().length()) {
 			System.out.println("ho");
 			return;
 		}
 		if (algoritmo.checkPossible()) {
 			ArrayList<Character> banderas = algoritmo.siguientePaso();
 			panelAnimacion.setEstados(banderas.get(0), banderas.get(2));
+			if(banderas.get(1).equals('s')) {
+				paneldePila.eliminarElemento();
+			}else if (!banderas.get(2).equals('v')){
+				paneldePila.agregarElemento(banderas.get(2));
+			}
 			System.out.println("si");
-
-			panelAnimacion.setAnimacion();			
+			paneldePila.setAnimacion();
+			panelAnimacion.setAnimacion();
+			if (algoritmo.getIndex()+1>algoritmo.getCadena().length() && algoritmo.isAceptado()) {
+				vista.getLblEstadoCadena().setText("Cadena Aceptada");
+				this.vista.getBtnSiguiente().setEnabled(false);
+			}
 		}
 		else {
 			vista.getLblEstadoCadena().setText("Cadena Rechazada");

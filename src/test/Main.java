@@ -10,7 +10,7 @@ public class Main {
 		VistaPrincipal vista = new VistaPrincipal();
 		Algoritmo algoritmo = new Algoritmo();
 		PanelAutomata panel = new PanelAutomata();
-		ControlVista controlador = new ControlVista(vista.getPanelAutomata(),vista,algoritmo);
+		ControlVista controlador = new ControlVista(vista.getPanelAutomata(),vista.getPanelPila(),vista,algoritmo);
 		
 		vista.setVisible(true);
 	}

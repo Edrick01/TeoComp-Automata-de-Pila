@@ -52,8 +52,9 @@ public class Algoritmo {
 		System.out.println("Siguiente paso");
 
 		boolean meterPila=false;
+		boolean sacarPila=false;
 		ArrayList<Character> banderas = new ArrayList<Character>();
-		if(index+1<cadena.length()) {
+		if(index+1<=cadena.length()) {
 			
 			if (mitad) {
 				banderas.add('f');
@@ -84,11 +85,19 @@ public class Algoritmo {
 			}
 			
 			if(meterPila) {
+				meterPila=false;
 				System.out.println("meto a la pila");
 				pila.add(banderas.get(2));
 			}
+			if(banderas.get(1).equals('s')) {
+				pila.pop();
+			}
 			
 			index++;
+			if (pila.size()==0 && index+1>=cadena.length()) {
+				aceptado=true;
+			}
+			System.out.println(String.valueOf(index-1)+" <-index " + banderas.get(0)+ " " + banderas.get(1) + " " + banderas.get(2));
 			return banderas;
 		}
 		
@@ -108,7 +117,7 @@ public class Algoritmo {
 		return true;
 	}
 	
-	// agregar la verificacion
+	// poner cadena
 	public boolean setCadena(String cadena) {
 		if (checkCadena(cadena)) {
 			this.cadena = cadena;

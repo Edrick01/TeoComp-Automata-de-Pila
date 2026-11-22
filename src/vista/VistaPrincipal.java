@@ -37,6 +37,7 @@ public class VistaPrincipal extends JFrame {
 	private JLabel lblEstadoCadena;
 	private JButton btnLeerCadena;
 	private JPanel panelAutomata;
+	private JPanel panelPila;
 	/**
 	 * Launch the application.
 	 */
@@ -113,7 +114,7 @@ public class VistaPrincipal extends JFrame {
 		panelCadenasEstados.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPorleer, lblCadenaRestante, lblEstado, lblEstadoActual}));
 		
 		JPanel panelPilaAutomata = new JPanel();
-		JPanel panelPila = new PanelPila();
+		panelPila = new PanelPila();
 		panelPilaAutomata.add(panelPila);
 		panelCuadroDinamico.add(panelPilaAutomata, BorderLayout.CENTER);
 		panelPilaAutomata.setLayout(new GridLayout(0, 2, 10, 10));
@@ -161,6 +162,9 @@ public class VistaPrincipal extends JFrame {
 	
 	public JPanel getPanelAutomata() {
 		return panelAutomata;
+	}
+	public JPanel getPanelPila() {
+		return panelPila;
 	}
 
 	public void setEstadoCadena(int estado) {

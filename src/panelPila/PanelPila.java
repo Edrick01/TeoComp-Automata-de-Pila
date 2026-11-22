@@ -63,13 +63,21 @@ public class PanelPila extends JPanel {
 	     
 	  }
 	
+	public void setAnimacion() {
+		repaint();
+	}
+	
 	public void agregarElemento(Character letra) {
 		enPila.add(letra);
 		numeroElementos++;
 	}
+	public void eliminarElemento() {
+		enPila.remove(enPila.size()-1);
+	}
 	public void reiniciar() {
 		enPila.clear();
 		numeroElementos=0;
+		repaint();
 	}
 	
 

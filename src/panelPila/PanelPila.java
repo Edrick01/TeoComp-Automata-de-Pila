@@ -30,7 +30,7 @@ public class PanelPila extends JPanel {
 	    int tamanoFont=0;
 	    double altura=0;
 	    if (numeroElementos>0) {
-	    	tamanoFont=400/numeroElementos;
+	    	tamanoFont=350/numeroElementos;
 	    	altura=(getHeight()/numeroElementos - margen/(numeroElementos/1.9));
 	    }
 	    
@@ -45,7 +45,8 @@ public class PanelPila extends JPanel {
 	    Font font =new Font("SansSerif",Font.PLAIN, tamanoFont);
 	    g2d.setFont(font);
 	    FontMetrics fm = g2d.getFontMetrics(font);
-	    int ancho = fm.stringWidth("a");
+	    int ancho=0;
+	    if (!enPila.isEmpty()) ancho = fm.stringWidth(String.valueOf(enPila.getLast()));
 	    int altoTexto = fm.getHeight();
 	    for (int i=1; i<=numeroElementos;i++) {
 	    	 //parte Baja

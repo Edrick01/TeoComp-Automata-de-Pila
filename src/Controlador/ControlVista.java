@@ -42,6 +42,7 @@ public class ControlVista implements ActionListener{
 		try {
 			if (!algoritmo.setCadena(vista.getCadenaText().getText().trim())) {
 				vista.getLblEstadoCadena().setText("La cadena Ingresada no es compatible");
+				panelAnimacion.detenerAnimaciones();
 			}
 			else {
 				vista.getLblEstadoCadena().setText("Reconociendo Cadena");
@@ -49,6 +50,7 @@ public class ControlVista implements ActionListener{
 				panelAnimacion.setAnimacion();	
 				paneldePila.reiniciar();
 				this.vista.getBtnSiguiente().setEnabled(true);
+				panelAnimacion.detenerAnimaciones();
 
 			}
 		}

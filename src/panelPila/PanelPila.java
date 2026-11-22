@@ -2,6 +2,7 @@ package panelPila;
 
 import java.awt.BasicStroke;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,23 +14,34 @@ import javax.swing.Timer;
 
 public class PanelPila extends JPanel {
 	protected Timer timerRepaint;
-	protected int numeroElementos=2;
+	protected int numeroElementos=0;
 	protected double margen = 20;
 	protected ArrayList<Character> enPila=new ArrayList<Character>();
+
 	protected void paintComponent(Graphics g) {
-		enPila.add('a');
-		enPila.add('a');
+		numeroElementos=enPila.size();
+		//enPila.add('a');
+		//enPila.add('a');
+		//enPila.add('a');
+		//enPila.add('a');
+		//enPila.add('a');
 	    super.paintComponent(g);
 	    Graphics2D g2d = (Graphics2D) g;
+	    int tamanoFont=400/numeroElementos;
+	    
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2d.setStroke(new BasicStroke(2));
 	    double FondoY = getHeight()/2 + getHeight()/2 - margen;
 	    double centroIzquierdaX = getWidth() - getWidth();
-	    double centroX=getWidth()/2 - 20;
+	    double centroX=getWidth()/2;
 	    double puntoXDerecha=getWidth()-margen;
 	    double puntoXIzquierda=centroIzquierdaX + margen;
 	    double altura=(getHeight()/numeroElementos - margen/(numeroElementos/1.9));
-	    g2d.setFont(new Font("SansSerif",Font.PLAIN, 50));
+	    Font font =new Font("SansSerif",Font.PLAIN, tamanoFont);
+	    g2d.setFont(font);
+	    FontMetrics fm = g2d.getFontMetrics(font);
+	    int ancho = fm.stringWidth("a");
+	    int altoTexto = fm.getHeight();
 	    for (int i=1; i<=numeroElementos;i++) {
 	    	 //parte Baja
 		    g2d.draw(new Line2D.Double(puntoXIzquierda,FondoY-((i-1)*altura), puntoXDerecha,FondoY-((i-1)*altura)));
@@ -41,7 +53,7 @@ public class PanelPila extends JPanel {
 		    
 		    g2d.draw(new Line2D.Double(puntoXDerecha ,FondoY-((i-1)*altura) ,puntoXDerecha,FondoY-((i)*altura)));
 		    
-		    g2d.drawString(String.valueOf(enPila.get(i-1)),(float)centroX,(float) ((FondoY-((i)*altura))+(FondoY-((i-1)*altura))/2));
+		    g2d.drawString(String.valueOf(enPila.get(i-1)),(float)(centroX - ancho/2.0),(float)(((FondoY-((i)*altura))+(FondoY-((i-1)*altura)))/2+ ancho/2.0));
 	    }
 	     
 	  }

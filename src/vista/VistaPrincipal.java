@@ -27,6 +27,7 @@ import java.awt.Dimension;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.LineBorder;
 
 public class VistaPrincipal extends JFrame {
 
@@ -115,6 +116,7 @@ public class VistaPrincipal extends JFrame {
 		
 		JPanel panelPilaAutomata = new JPanel();
 		panelPila = new PanelPila();
+		panelPila.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		panelPilaAutomata.add(panelPila);
 		panelCuadroDinamico.add(panelPilaAutomata, BorderLayout.CENTER);
 		panelPilaAutomata.setLayout(new GridLayout(0, 2, 10, 10));

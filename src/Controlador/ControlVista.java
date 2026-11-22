@@ -58,11 +58,10 @@ public class ControlVista implements ActionListener{
 	}
 	
 	public void siguientePaso() {
+		
 		System.out.println("hoal");
-		if (algoritmo.getIndex()+1>algoritmo.getCadena().length()) {
-			System.out.println("ho");
-			return;
-		}
+
+
 		if (algoritmo.checkPossible()) {
 			ArrayList<Character> banderas = algoritmo.siguientePaso();
 			panelAnimacion.setEstados(banderas.get(0), banderas.get(2));
@@ -74,16 +73,23 @@ public class ControlVista implements ActionListener{
 			System.out.println("si");
 			paneldePila.setAnimacion();
 			panelAnimacion.setAnimacion();
-			if (algoritmo.getIndex()+1>algoritmo.getCadena().length() && algoritmo.isAceptado()) {
-				vista.getLblEstadoCadena().setText("Cadena Aceptada");
-				this.vista.getBtnSiguiente().setEnabled(false);
-			}
-		}
+			//si se acepta en este paso, da el mensaje
+			esAceptado();
+		}		
 		else {
 			vista.getLblEstadoCadena().setText("Cadena Rechazada");
+			this.vista.getBtnSiguiente().setEnabled(false);
 			
 		}
 	
+	}
+	
+	public void esAceptado() {
+		if (algoritmo.isAceptado()) {
+			vista.getLblEstadoCadena().setText("Cadena Aceptada");
+			this.vista.getBtnSiguiente().setEnabled(false);
+			return;
+		}
 	}
 
 }

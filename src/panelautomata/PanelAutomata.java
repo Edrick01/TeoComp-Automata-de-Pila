@@ -14,11 +14,18 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class PanelAutomata extends JPanel {
-	protected List<Character> estados = List.of('s', 'f');
-	protected List<Character> etiquetaTransicion = List.of('a', 'b', 'v', 'n');
-	protected Character estadoActual=estados.get(0);
-	protected Character etiqueta=etiquetaTransicion.get(3);
-	protected Color Transicion = new Color (255, 243, 176);
+	//estados 's' y 'f'
+	//etiquetas 'a' 'b' 'v' y 'n'
+	//si 'n' esta activa es que esta en "reposo" es decir, lo que se colorea es el estado actual
+	//si no es 'n' se colorea la flecha
+	protected Character estadoActual='s';
+	protected Character etiqueta='n';
+	protected Color estadoS0 = new Color (247, 217, 175);
+	protected Color estadoS1 = new Color (242, 160, 45);
+	protected Color estadoF0 = new Color (154, 230, 154);
+	protected Color estadoF1= new Color (31, 222, 31);
+	
+	protected Color error = new Color (255, 0, 0);
 	protected Timer timerRepaint;
 	
 	@Override
@@ -45,17 +52,11 @@ public class PanelAutomata extends JPanel {
 	    g2d.drawLine(centroS_X - radio - 12, centroY - 13, centroS_X - radio - 2, centroY);
 	    g2d.drawLine(centroS_X - radio - 12, centroY + 13, centroS_X - radio - 2, centroY);
 	    
-	    // da color, rellena, luego nuevamente color negro y dibuja la circunferencia encima
-	    //igual escribe el estado incial
-	    
-	    if (estadoActual.equals('s') && etiqueta.equals('n') ) {
-	    	g2d.setColor(new Color(255, 243, 176));
-		    g2d.fillOval(centroS_X - radio, centroY - radio, diametro, diametro);
-	    }
-	    
+	    //pinta los estados
+	    rellenarCirculos(g2d,radio,diametro,centroY,centroS_X,centroF_X);
 	    g2d.setColor(Color.BLACK);
-	    g2d.drawOval(centroS_X - radio, centroY - radio, diametro, diametro);
-	    g2d.drawString("s", centroS_X - 13, centroY+12);
+	    pintarCircunferencia(g2d,radio,diametro,centroY,centroS_X,centroF_X);
+	    
 		 
 		 //Si estamos la etiqueta no es n ni v y esta en s, se pinta el arco, n significa que NO esta usando una transicion
 	    if (!etiqueta.equals('n') && !etiqueta.equals('v') && estadoActual.equals('s')) {
@@ -69,23 +70,7 @@ public class PanelAutomata extends JPanel {
 		g2d.drawLine(centroS_X+20, centroY-radio, centroS_X+28,centroY-15 );
 		g2d.drawLine(centroS_X+28,centroY-15, centroS_X+35, centroY-radio );
 	    
-		
-		 if (estadoActual.equals('f') && etiqueta.equals('n')) {
-			 g2d.setColor(new Color(255, 243, 176));
-			 g2d.fillOval(centroF_X - radio, centroY - radio, diametro, diametro);
-		 }
-		 g2d.setColor(Color.BLACK);
-	    // dibuja el circulo mas grande del estado final
-		 g2d.drawOval(centroF_X - radio, centroY - radio, diametro, diametro);   
-	    // paradibujar el circulo interior hacemos un margen y dibujamos
-		 int margen = 6;
-		 g2d.drawOval(
-	        centroF_X - radio + margen, 
-	        centroY - radio + margen, 
-	        diametro - (margen * 2), 
-	        diametro - (margen * 2)
-				 );
-		 g2d.drawString("f", centroF_X - 10, centroY + 17);
+
 		 
 		 //Si estamos la etiqueta no es n ni v y esta en f, se pinta el arco, n significa que NO esta usando una transicion
 		  if (!etiqueta.equals('n') && !etiqueta.equals('v') && estadoActual.equals('f')) {
@@ -164,6 +149,74 @@ public class PanelAutomata extends JPanel {
 		 g2d.drawString("\u03b5 / \u03b5 / \u03b5", (getWidth() / 2)-20, centroY+20);
 	   
 	}
+	//mejorar si es posible
+	public void rellenarCirculos(Graphics2D g2d,int radio,int diametro,int centroY,int centroS_X,int centroF_X ) {
+		g2d.setColor(estadoS0);
+	    g2d.fillOval(centroS_X - radio, centroY - radio, diametro, diametro);
+	    g2d.setColor(estadoF0);
+		g2d.fillOval(centroF_X - radio, centroY - radio, diametro, diametro);
+		
+	    if (etiqueta.equals('n')) {
+			if (estadoActual.equals('s')) {
+		    	g2d.setColor(estadoS1);
+			    g2d.fillOval(centroS_X - radio, centroY - radio, diametro, diametro);
+		    }
+		    else if (estadoActual.equals('f')) {
+				g2d.setColor(estadoF1);
+				g2d.fillOval(centroF_X - radio, centroY - radio, diametro, diametro);
+		    }
+	    }
+
+
+	}
+	
+	//mejorar si es posble
+	public void pintarCircunferencia(Graphics2D g2d,int radio,int diametro,int centroY,int centroS_X,int centroF_X ) {
+	    
+		g2d.drawOval(centroS_X - radio, centroY - radio, diametro, diametro);
+	    g2d.drawString("s", centroS_X - 13, centroY+12); 
+	    
+	    // dibuja el circulo mas grande del estado final
+		g2d.drawOval(centroF_X - radio, centroY - radio, diametro, diametro);   
+	    // paradibujar el circulo interior hacemos un margen y dibujamos
+		 int margen = 6;
+		g2d.drawOval(
+	        centroF_X - radio + margen, 
+	        centroY - radio + margen, 
+	        diametro - (margen * 2), 
+	        diametro - (margen * 2)
+				 );
+		g2d.drawString("f", centroF_X - 10, centroY + 17);
+		
+		if (etiqueta.equals('n')) {
+			g2d.setStroke(new BasicStroke(4));
+			 if (estadoActual.equals('s')){
+				g2d.drawOval(centroS_X - radio, centroY - radio, diametro, diametro);
+				g2d.drawString("s", centroS_X - 13, centroY+12);
+			 }
+			 else if(estadoActual.equals('f')) {
+				 g2d.drawOval(centroF_X - radio, centroY - radio, diametro, diametro);  
+					g2d.drawOval(
+				        centroF_X - radio + margen, 
+				        centroY - radio + margen, 
+				        diametro - (margen * 2), 
+				        diametro - (margen * 2)
+							 );
+					g2d.drawString("f", centroF_X - 10, centroY + 17);
+			 }
+			 g2d.setStroke(new BasicStroke(2));
+		 }
+	}
+	
+	//implementar
+	public void colorearEtiquetas() {
+		
+	}
+	public void colorearFlechas() {
+		
+	}
+	
+	
 	public void setAnimacion() {
 		System.out.println("animacion");
 

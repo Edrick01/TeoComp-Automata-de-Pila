@@ -27,7 +27,12 @@ public class PanelPila extends JPanel {
 		//enPila.add('a');
 	    super.paintComponent(g);
 	    Graphics2D g2d = (Graphics2D) g;
-	    int tamanoFont=400/numeroElementos;
+	    int tamanoFont=0;
+	    double altura=0;
+	    if (numeroElementos>0) {
+	    	tamanoFont=400/numeroElementos;
+	    	altura=(getHeight()/numeroElementos - margen/(numeroElementos/1.9));
+	    }
 	    
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2d.setStroke(new BasicStroke(2));
@@ -36,7 +41,7 @@ public class PanelPila extends JPanel {
 	    double centroX=getWidth()/2;
 	    double puntoXDerecha=getWidth()-margen;
 	    double puntoXIzquierda=centroIzquierdaX + margen;
-	    double altura=(getHeight()/numeroElementos - margen/(numeroElementos/1.9));
+	   
 	    Font font =new Font("SansSerif",Font.PLAIN, tamanoFont);
 	    g2d.setFont(font);
 	    FontMetrics fm = g2d.getFontMetrics(font);

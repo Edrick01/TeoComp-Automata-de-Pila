@@ -140,6 +140,7 @@ public class VistaPrincipal extends JFrame {
 		panel_4.add(btnSiguiente);
 		
 		lblEstadoCadena = new JLabel("Cadena en Espera");
+		setEstadoCadena(4);
 		lblEstadoCadena.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_4.add(lblEstadoCadena);
 		
@@ -180,7 +181,7 @@ public class VistaPrincipal extends JFrame {
 	public JLabel getLblCadenaRestante() {
 		return lblCadenaRestante;
 	}
-
+	// cambiar por area de texto
 	public void setEstadoCadena(int estado) {
 		if(estado==1) {
 		lblEstadoCadena.setForeground(new Color(0, 140, 50));
@@ -194,9 +195,13 @@ public class VistaPrincipal extends JFrame {
 			lblEstadoCadena.setForeground(new Color(0, 0, 0));
 			lblEstadoCadena.setText("Cadena en Proceso");
 		}
-		else {
+		else if (estado == 4) {
 			lblEstadoCadena.setForeground(new Color(105, 105, 105));
 			lblEstadoCadena.setText("Cadena en Espera");
+		}
+		else {
+			lblEstadoCadena.setForeground(new Color(200, 0, 0));
+			lblEstadoCadena.setText("La cadena que ingreso contiene caracteres\nque no perteneces al alfabeto");
 		}
 	}
 	public void agregarElementoTabla(Character elemento, boolean sacar) {

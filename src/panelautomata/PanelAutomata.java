@@ -19,7 +19,7 @@ public class PanelAutomata extends JPanel {
 	//etiquetas 'a' 'b' 'v' y 'n'
 	//si 'n' esta activa es que esta en "reposo" es decir, lo que se colorea es el estado actual
 	//si no es 'n' se colorea la flecha
-	protected Character estadoActual='s';
+	protected Character estadoActual='n';
 	protected Character etiqueta='n';
 	protected Color estadoSuave= new Color (197, 217, 197);
 	protected Color estadoFuerte= new Color (85, 122, 88);
@@ -181,11 +181,19 @@ public class PanelAutomata extends JPanel {
 
         		g2d.drawString(String.valueOf(etiqueta)+" / "+ String.valueOf(etiqueta)+" / \u03b5", x, y);
             }
-            else if (this.etiqueta.equals('v')){
-        		g2d.drawString("\u03b5 / \u03b5 / \u03b5", x, y);
-            }
-
 		
+		}
+		else if (this.etiqueta.equals(etiqueta) && estado.equals('v')) {
+            double pulso = (Math.sin(fase*2.0) + 1.0) / 2.0;
+            float grosor =13.0f + (float) (pulso*2.0);
+            g2d.setFont(g2d.getFont().deriveFont(Font.BOLD, grosor));
+			if (enError) {
+				g2d.setColor(errorFuerte); 
+			}
+			else {
+				g2d.setColor(estadoFuerte); 
+			}
+			g2d.drawString("\u03b5 / \u03b5 / \u03b5", x, y);
 		}
 		else {
 			
@@ -211,7 +219,7 @@ public class PanelAutomata extends JPanel {
 		Character aux = etiquetas.charAt(0);
 		Character aux2 = etiquetas.charAt(1);
 		if (estado.equals(estadoActual) && (aux.equals(this.etiqueta) || aux2.equals(this.etiqueta))) {
-			System.out.println("estados: trancisiondibujo  " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
+			//System.out.println("estados: trancisiondibujo  " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
 			double pulso = (Math.sin(fase*2.0) + 1.0) / 2.0;
             float grosor = 2.0f + (float) (pulso * 2.4f);
             g2d.setStroke(new BasicStroke(grosor));
@@ -245,14 +253,11 @@ public class PanelAutomata extends JPanel {
 		g2d.setStroke(new BasicStroke(2));
 
 	}
-	
-	public void colorearFlechas() {
-		
-	}
+
 	
 	
 	public void setAnimacion() {
-		System.out.println("animacion");
+		//System.out.println("animacion");
 		if (timerFlecha != null && timerFlecha.isRunning()) {
             timerFlecha.stop();
         }
@@ -262,7 +267,7 @@ public class PanelAutomata extends JPanel {
         fase = 0.0;
 
 		if (!etiqueta.equals('n')) {
-			System.out.println("timer");
+			//System.out.println("timer");
 			repaint();
 			//this.etiqueta='n';
 			
@@ -314,7 +319,7 @@ public class PanelAutomata extends JPanel {
 	public void detenerAnimaciones() {
         if (timerFlecha != null) timerFlecha.stop();
         timerRespiracion.stop();
-        estadoActual = 's';
+        estadoActual = 'n';
         etiqueta = 'n';
         repaint();
     }

@@ -1,4 +1,5 @@
 package Controlador;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -41,11 +42,15 @@ public class ControlVista implements ActionListener{
 	public void cargarCadena() {
 		try {
 			if (!algoritmo.setCadena(vista.getCadenaText().getText().trim())) {
-				vista.getLblEstadoCadena().setText("La cadena Ingresada no es compatible");
 				panelAnimacion.detenerAnimaciones();
-				vista.setEstadoCadena(4);
+				vista.setEstadoCadena(5);
+				vista.getLblCadenaRestante().setForeground(new Color (0, 0, 0));
+				vista.getLblCadenaRestante().setText("Esperando Cadena...");
+
+				
 			}
 			else {
+				vista.getLblCadenaRestante().setForeground(new Color (0, 0, 0));
 				panelAnimacion.detenerAnimaciones();
 				panelAnimacion.setEnError(false);
 				vista.setEstadoCadena(3);
@@ -59,6 +64,7 @@ public class ControlVista implements ActionListener{
 			}
 		}
 		catch (Exception e) {
+			vista.getLblEstadoCadena().setForeground(new Color(200, 0, 0));
 			vista.getLblEstadoCadena().setText("Ocurrió un error inesperado: " + e.getMessage());
 		}
 	}
@@ -71,7 +77,7 @@ public class ControlVista implements ActionListener{
 		if (algoritmo.checkPossible()) {
 	
 			ArrayList<Character> banderas = algoritmo.siguientePaso();
-			this.vista.getLblCadenaRestante().setText(algoritmo.getPorLeer());
+			vista.getLblCadenaRestante().setText(algoritmo.getPorLeer());
 			panelAnimacion.setEstados(banderas.get(0), banderas.get(2));
 			vista.getLblEstadoActual().setText(String.valueOf(banderas.get(0)));
 			if(banderas.get(1).equals('s')) {
@@ -89,7 +95,9 @@ public class ControlVista implements ActionListener{
 			panelAnimacion.setEnError(true);
 			vista.setEstadoCadena(2);
 			this.vista.getBtnSiguiente().setEnabled(false);
-			
+			if (!algoritmo.getPorLeer().isEmpty()) {
+				this.vista.getLblCadenaRestante().setForeground(new Color (200,0,0));
+			}
 		}
 	
 	}
@@ -98,6 +106,11 @@ public class ControlVista implements ActionListener{
 		if (algoritmo.isAceptado()) {
 			vista.setEstadoCadena(1);
 			this.vista.getBtnSiguiente().setEnabled(false);
+			if (algoritmo.getPorLeer().isEmpty()) {
+				vista.getLblCadenaRestante().setForeground(new Color (0, 140, 50));
+				vista.getLblCadenaRestante().setText("Cadena leida exitosamente");
+				
+			}
 		}
 	}
 

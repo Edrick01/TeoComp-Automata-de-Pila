@@ -33,17 +33,21 @@ public class Algoritmo {
 		System.out.println("CHECK POSSIBLE");
 		System.out.println("Index: " + index);
 		System.out.println("Longitud: " + longitudCadena);
+		if (!pila.isEmpty())
+		System.out.println(pila.lastElement());
+		
 		if (mitad) {
 			return true;
 		}
-		if (index+1==longitudCadena) {
+		if (index+1>longitudCadena && pila.empty()) {
 			return true;
 		}
 		else if (index+1<=mitadCadena) {
 			return true;
 		}
-		else if (index+1>mitadCadena && index+1<longitudCadena) {
+		else if (index+1>mitadCadena && index+1<=longitudCadena && !pila.empty()) {
 			if (cadena.charAt(index) == pila.lastElement()) {
+				System.out.println(cadena.charAt(index) + "==" +pila.lastElement() );
 				return true;
 			}
 		}
@@ -69,7 +73,7 @@ public class Algoritmo {
 
 		ArrayList<Character> banderas = new ArrayList<Character>();
 		
-		if(index+1<=longitudCadena) {
+		if(index+1<=longitudCadena || mitad) {
 			if (!porLeer.isEmpty() && !mitad) porLeer=porLeer.substring(1, porLeer.length());
 			//si estamos en la mitad simplemente pasamos al estado f
 			if (mitad) {
@@ -81,10 +85,13 @@ public class Algoritmo {
 			}
 			// si no y si estamos antes de la mitad siempre leemos y metemos a la pila luego
 			else if (index+1<=mitadCadena) {
+				
+				System.out.println(index+" index");
 				banderas.add('s');
 				banderas.add('n');
 				//si justo llegamos al caracter que divide la cadena, a la proxima entraremos al if mitad
 				if (index+1==mitadCadena) {
+					System.out.println(index+" index" + "mirtad cadena " +mitadCadena);
 					mitad=true;
 				}
 			}

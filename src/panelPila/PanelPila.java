@@ -33,6 +33,8 @@ public class PanelPila extends JPanel {
 	    double centroX=getWidth()/2;
 	    double puntoXDerecha=getWidth()-7*margen;
 	    double puntoXIzquierda=centroIzquierdaX + 7*margen;
+	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    g2d.setStroke(new BasicStroke(4));
 	    Font font2 =new Font("SansSerif",Font.PLAIN, 50);
 	    g2d.setFont(font2);
 	    FontMetrics fm2 = g2d.getFontMetrics(font2);
@@ -40,15 +42,14 @@ public class PanelPila extends JPanel {
 	    g2d.drawString("PILA", (float)centroX - fm2.stringWidth("PII"),fm2.getHeight()-20);
 		numeroElementos=enPila.size();
 
-	    int tamanoFont=150;
+	    int tamanoFont=100;
 	    double altura=0;
 	    if (elementosTotales>0) {
 	    	tamanoFont=300/elementosTotales;
 	    	altura=(getHeight()/elementosTotales - 3*margen/(elementosTotales/1.9));
 	    }
 	    
-	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    g2d.setStroke(new BasicStroke(2));
+	
 	   
 	    Font font =new Font("SansSerif",Font.PLAIN, tamanoFont);
 	    g2d.setFont(font);
@@ -61,9 +62,14 @@ public class PanelPila extends JPanel {
 	    for (int i=1; i<=elementosTotales; i++) {
 	    	 //parte Baja
 		    g2d.draw(new Line2D.Double(puntoXIzquierda,FondoY-((i-1)*altura), puntoXDerecha,FondoY-((i-1)*altura)));
+		    if (i==elementosTotales)
 		    //parte Alta
 		    g2d.draw(new Line2D.Double(puntoXIzquierda,FondoY-((i)*altura), puntoXDerecha, FondoY-((i)*altura)));
-		    
+		    else {
+		    	  g2d.setStroke(new BasicStroke(1));
+				  g2d.draw(new Line2D.Double(puntoXIzquierda,FondoY-((i)*altura), puntoXDerecha, FondoY-((i)*altura)));
+		    	  g2d.setStroke(new BasicStroke(4));
+		    }
 		    //laterales
 		    g2d.draw(new Line2D.Double(puntoXIzquierda, FondoY-((i-1)*altura) ,centroIzquierdaX + 7*margen,FondoY-((i)*altura)));
 		    

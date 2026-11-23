@@ -172,12 +172,12 @@ public class PanelAutomata extends JPanel {
 			}
             
             if (estado.equals('s')) {
-    			System.out.println("estados: " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
+    			//System.out.println("estados: " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
 
     			g2d.drawString(String.valueOf(etiqueta)+" / \u03b5 / "+String.valueOf(etiqueta), x, y);
             }
             else if (estado.equals('f')){
-    			System.out.println("estados: " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
+    			//System.out.println("estados: " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
 
         		g2d.drawString(String.valueOf(etiqueta)+" / "+ String.valueOf(etiqueta)+" / \u03b5", x, y);
             }
@@ -314,11 +314,13 @@ public class PanelAutomata extends JPanel {
 	public void detenerAnimaciones() {
         if (timerFlecha != null) timerFlecha.stop();
         timerRespiracion.stop();
-        estadoActual = 'n';
+        estadoActual = 's';
         etiqueta = 'n';
         repaint();
     }
-	
+	public void setEnError(boolean error) {
+		enError=error;
+	}
 	//mejorar si es posible
 	/*public void rellenarCirculos(Graphics2D g2d,int radio,int diametro,int centroY,int centroS_X,int centroF_X ) {
 		g2d.setColor(estadoS0);

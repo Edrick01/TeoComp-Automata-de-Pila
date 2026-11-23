@@ -43,14 +43,18 @@ public class ControlVista implements ActionListener{
 			if (!algoritmo.setCadena(vista.getCadenaText().getText().trim())) {
 				vista.getLblEstadoCadena().setText("La cadena Ingresada no es compatible");
 				panelAnimacion.detenerAnimaciones();
+				vista.setEstadoCadena(4);
 			}
 			else {
-				vista.getLblEstadoCadena().setText("Reconociendo Cadena");
+				panelAnimacion.detenerAnimaciones();
+				panelAnimacion.setEnError(false);
+				vista.setEstadoCadena(3);
 				panelAnimacion.setEstados('s', 'n');
 				panelAnimacion.setAnimacion();	
 				paneldePila.reiniciar();
 				this.vista.getBtnSiguiente().setEnabled(true);
-				panelAnimacion.detenerAnimaciones();
+				this.vista.getLblCadenaRestante().setText(algoritmo.getPorLeer());
+				
 
 			}
 		}
@@ -65,8 +69,11 @@ public class ControlVista implements ActionListener{
 
 
 		if (algoritmo.checkPossible()) {
+	
 			ArrayList<Character> banderas = algoritmo.siguientePaso();
+			this.vista.getLblCadenaRestante().setText(algoritmo.getPorLeer());
 			panelAnimacion.setEstados(banderas.get(0), banderas.get(2));
+			vista.getLblEstadoActual().setText(String.valueOf(banderas.get(0)));
 			if(banderas.get(1).equals('s')) {
 				paneldePila.eliminarElemento();
 			}else if (!banderas.get(2).equals('v')){
@@ -79,7 +86,8 @@ public class ControlVista implements ActionListener{
 			esAceptado();
 		}		
 		else {
-			vista.getLblEstadoCadena().setText("Cadena Rechazada");
+			panelAnimacion.setEnError(true);
+			vista.setEstadoCadena(2);
 			this.vista.getBtnSiguiente().setEnabled(false);
 			
 		}
@@ -88,9 +96,8 @@ public class ControlVista implements ActionListener{
 	
 	public void esAceptado() {
 		if (algoritmo.isAceptado()) {
-			vista.getLblEstadoCadena().setText("Cadena Aceptada");
+			vista.setEstadoCadena(1);
 			this.vista.getBtnSiguiente().setEnabled(false);
-			return;
 		}
 	}
 

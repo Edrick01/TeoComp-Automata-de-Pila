@@ -39,6 +39,8 @@ public class VistaPrincipal extends JFrame {
 	private JButton btnLeerCadena;
 	private JPanel panelAutomata;
 	private JPanel panelPila;
+	private JLabel lblEstadoActual;
+	private JLabel lblCadenaRestante;
 	/**
 	 * Launch the application.
 	 */
@@ -99,7 +101,7 @@ public class VistaPrincipal extends JFrame {
 		JLabel lblPorleer = new JLabel("Por Leer");
 		lblPorleer.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		JLabel lblCadenaRestante = new JLabel("Esperando Cadena...");
+		lblCadenaRestante = new JLabel("Esperando Cadena...");
 		lblCadenaRestante.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JLabel lblEstado = new JLabel("Estado");
@@ -109,7 +111,7 @@ public class VistaPrincipal extends JFrame {
 		panelCadenasEstados.add(lblCadenaRestante);
 		panelCadenasEstados.add(lblEstado);
 		
-		JLabel lblEstadoActual = new JLabel("N/A");
+		lblEstadoActual = new JLabel("N/A");
 		lblEstadoActual.setHorizontalAlignment(SwingConstants.CENTER);
 		panelCadenasEstados.add(lblEstadoActual);
 		panelCadenasEstados.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPorleer, lblCadenaRestante, lblEstado, lblEstadoActual}));
@@ -167,6 +169,16 @@ public class VistaPrincipal extends JFrame {
 	}
 	public JPanel getPanelPila() {
 		return panelPila;
+	}
+
+	
+	
+	public JLabel getLblEstadoActual() {
+		return lblEstadoActual;
+	}
+
+	public JLabel getLblCadenaRestante() {
+		return lblCadenaRestante;
 	}
 
 	public void setEstadoCadena(int estado) {

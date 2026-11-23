@@ -4,7 +4,7 @@ import java.util.Stack;
 
 public class Algoritmo {
 	private Stack<Character> pila;
-	private ArrayList<Character> leido;
+	private String porLeer;
 	private String cadena;
 	private int index;
 	private int mitadCadena;
@@ -13,7 +13,7 @@ public class Algoritmo {
 	
 	public Algoritmo () {
 		pila = new Stack<Character>();
-		leido = new ArrayList<Character>();
+		porLeer = "";
 		cadena="";
 		longitudCadena=0;
 		index=0;
@@ -30,10 +30,13 @@ public class Algoritmo {
 	
 	//verificamos si el paso es posible
 	public boolean checkPossible() {
-		if (longitudCadena%2==1) {
-			return false;
+		System.out.println("CHECK POSSIBLE");
+		System.out.println("Index: " + index);
+		System.out.println("Longitud: " + longitudCadena);
+		if (mitad) {
+			return true;
 		}
-		else if (index+1==longitudCadena) {
+		if (index+1==longitudCadena) {
 			return true;
 		}
 		else if (index+1<=mitadCadena) {
@@ -58,10 +61,16 @@ public class Algoritmo {
 	// asi con b, y 'v' unicamente aparece en la transicion vacia
 	public ArrayList<Character> siguientePaso() {
 		System.out.println("Siguiente paso");
+		System.out.println("Cadena: " + cadena);
+		System.out.println("Index: " + index);
+		System.out.println("Longitud: " + longitudCadena);
+		System.out.println("Tamaño pila: " + pila.size());
+		System.out.println("Mitad: " + mitad);
 
 		ArrayList<Character> banderas = new ArrayList<Character>();
 		
 		if(index+1<=longitudCadena) {
+			if (!porLeer.isEmpty() && !mitad) porLeer=porLeer.substring(1, porLeer.length());
 			//si estamos en la mitad simplemente pasamos al estado f
 			if (mitad) {
 				banderas.add('f');
@@ -117,7 +126,7 @@ public class Algoritmo {
 	
 	//verificar si la cadena es de a y  b
 	public boolean checkCadena(String cadena) {
-		for (int i=0; i<longitudCadena;i++) {
+		for (int i=0; i<cadena.length();i++) {
 			if(cadena.charAt(i)!= 'a' && cadena.charAt(i)!= 'b' ) {
 				return false;
 			}
@@ -132,9 +141,10 @@ public class Algoritmo {
 			index=0;
 			longitudCadena=cadena.length();
 			mitadCadena=longitudCadena/2;
+			if (longitudCadena%2==1) mitadCadena++;
 			mitad=false;
 			pila.clear();
-			leido.clear();
+			porLeer=cadena;
 			return true;
 		}
 
@@ -143,6 +153,7 @@ public class Algoritmo {
 	
 	public boolean isAceptado() {
 		if (index+1>=longitudCadena && pila.size()==0) {
+			
 			return true;
 		}
 		return false;
@@ -156,8 +167,8 @@ public class Algoritmo {
 	public Stack<Character> getPila() {
 		return pila;
 	}
-	public ArrayList<Character> getLeido() {
-		return leido;
+	public String getPorLeer() {
+		return porLeer;
 	}
 	public int getIndex() {
 		return index;

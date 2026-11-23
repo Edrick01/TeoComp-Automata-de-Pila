@@ -15,6 +15,7 @@ import javax.swing.Timer;
 public class PanelPila extends JPanel {
 	protected Timer timerRepaint;
 	protected int numeroElementos=0;
+	protected int elementosTotales=0;
 	protected double margen = 20;
 	protected ArrayList<Character> enPila=new ArrayList<Character>();
 
@@ -30,8 +31,8 @@ public class PanelPila extends JPanel {
 	    double FondoY = getHeight()/2 + getHeight()/2 - margen;
 	    double centroIzquierdaX = getWidth() - getWidth();
 	    double centroX=getWidth()/2;
-	    double puntoXDerecha=getWidth()-3*margen;
-	    double puntoXIzquierda=centroIzquierdaX + 3*margen;
+	    double puntoXDerecha=getWidth()-7*margen;
+	    double puntoXIzquierda=centroIzquierdaX + 7*margen;
 	    Font font2 =new Font("SansSerif",Font.PLAIN, 50);
 	    g2d.setFont(font2);
 	    FontMetrics fm2 = g2d.getFontMetrics(font2);
@@ -39,11 +40,11 @@ public class PanelPila extends JPanel {
 	    g2d.drawString("PILA", (float)centroX - fm2.stringWidth("PII"),fm2.getHeight()-20);
 		numeroElementos=enPila.size();
 
-	    int tamanoFont=300;
+	    int tamanoFont=150;
 	    double altura=0;
-	    if (numeroElementos>0) {
-	    	tamanoFont=300/numeroElementos;
-	    	altura=(getHeight()/numeroElementos - 2*margen/(numeroElementos/1.9));
+	    if (elementosTotales>0) {
+	    	tamanoFont=300/elementosTotales;
+	    	altura=(getHeight()/elementosTotales - 3*margen/(elementosTotales/1.9));
 	    }
 	    
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -57,19 +58,20 @@ public class PanelPila extends JPanel {
 	    int altoTexto = fm.getHeight();
 	    
 	   
-	    
-	    
-	    for (int i=1; i<=numeroElementos;i++) {
+	    for (int i=1; i<=elementosTotales; i++) {
 	    	 //parte Baja
 		    g2d.draw(new Line2D.Double(puntoXIzquierda,FondoY-((i-1)*altura), puntoXDerecha,FondoY-((i-1)*altura)));
 		    //parte Alta
 		    g2d.draw(new Line2D.Double(puntoXIzquierda,FondoY-((i)*altura), puntoXDerecha, FondoY-((i)*altura)));
 		    
 		    //laterales
-		    g2d.draw(new Line2D.Double(puntoXIzquierda, FondoY-((i-1)*altura) ,centroIzquierdaX + 3*margen,FondoY-((i)*altura)));
+		    g2d.draw(new Line2D.Double(puntoXIzquierda, FondoY-((i-1)*altura) ,centroIzquierdaX + 7*margen,FondoY-((i)*altura)));
 		    
 		    g2d.draw(new Line2D.Double(puntoXDerecha ,FondoY-((i-1)*altura) ,puntoXDerecha,FondoY-((i)*altura)));
-		    
+	    	
+	    }
+	    
+	    for (int i=1; i<=numeroElementos;i++) {   
 		    g2d.drawString(String.valueOf(enPila.get(i-1)),(float)(centroX - ancho/2.0),(float)(((FondoY-((i)*altura))+(FondoY-((i-1)*altura)))/2+ altoTexto/4.0));
 	    }
 	     
@@ -83,14 +85,19 @@ public class PanelPila extends JPanel {
 		enPila.add(letra);
 		numeroElementos++;
 	}
+	
 	public void eliminarElemento() {
 		enPila.remove(enPila.size()-1);
 	}
+	
 	public void reiniciar() {
 		enPila.clear();
 		numeroElementos=0;
 		repaint();
 	}
 	
+	public void setElementosTotales(int elementos) {
+		elementosTotales=elementos;
+	}
 
 }

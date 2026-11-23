@@ -56,6 +56,12 @@ public class ControlVista implements ActionListener{
 				vista.setEstadoCadena(3);
 				panelAnimacion.setEstados('s', 'n');
 				panelAnimacion.setAnimacion();	
+				if (algoritmo.getLongitudCadena()==1) {
+					paneldePila.setElementosTotales(1);
+				}
+				else if (algoritmo.getLongitudCadena()%2==1) paneldePila.setElementosTotales(algoritmo.getLongitudCadena()/2 + 1);
+					
+				else paneldePila.setElementosTotales(algoritmo.getLongitudCadena()/2);
 				paneldePila.reiniciar();
 				this.vista.getBtnSiguiente().setEnabled(true);
 				this.vista.getLblCadenaRestante().setText(algoritmo.getPorLeer());

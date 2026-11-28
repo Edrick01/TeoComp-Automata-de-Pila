@@ -149,7 +149,8 @@ public class Algoritmo {
 			longitudCadena=cadena.length();
 			mitadCadena=longitudCadena/2;
 			if (longitudCadena%2==1) mitadCadena++;
-			mitad=false;
+			//si la cadena esta vacia pasa directo a la transicion vacia
+			mitad=(longitudCadena==0);
 			pila.clear();
 			porLeer=cadena;
 			return true;
@@ -159,11 +160,23 @@ public class Algoritmo {
 	}
 	
 	public boolean isAceptado() {
-		if (index+1>=longitudCadena && pila.size()==0) {
+		if (index==longitudCadena && pila.size()==0 && !mitad) {
 			
 			return true;
 		}
 		return false;
+	}
+	
+	//obtener el contenido de la pila en texto para la tabla
+	public String getPilaTexto() {
+		if (pila.isEmpty()) {
+			return "\u03b5";
+		}
+		String texto = "";
+		for (int i = pila.size() - 1; i >= 0; i--) {
+			texto += pila.get(i);
+		}
+		return texto;
 	}
 	
 	public String getCadena() {

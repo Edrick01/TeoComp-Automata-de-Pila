@@ -31,8 +31,10 @@ public class PanelPila extends JPanel {
 	    double FondoY = getHeight()/2 + getHeight()/2 - margen;
 	    double centroIzquierdaX = getWidth() - getWidth();
 	    double centroX=getWidth()/2;
-	    double puntoXDerecha=getWidth()-7*margen;
-	    double puntoXIzquierda=centroIzquierdaX + 7*margen;
+		//ajustar el margen para que no se aplaste la pila si la ventana se achica
+	    double margenLateral = Math.min(7*margen, getWidth()*0.25);
+	    double puntoXDerecha=getWidth()-margenLateral;
+	    double puntoXIzquierda=centroIzquierdaX + margenLateral;
 	    g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	    g2d.setStroke(new BasicStroke(4));
 	    Font font2 =new Font("SansSerif",Font.PLAIN, 50);
@@ -45,7 +47,7 @@ public class PanelPila extends JPanel {
 	    int tamanoFont=100;
 	    double altura=0;
 	    if (elementosTotales>0) {
-	    	tamanoFont=300/elementosTotales;
+	    	tamanoFont=Math.min(60, Math.max(14, 300/elementosTotales));
 	    	altura=(getHeight()/elementosTotales - 3*margen/(elementosTotales/1.9));
 	    }
 	    
@@ -55,7 +57,7 @@ public class PanelPila extends JPanel {
 	    g2d.setFont(font);
 	    FontMetrics fm = g2d.getFontMetrics(font);
 	    int ancho=0;
-	    if (!enPila.isEmpty()) ancho = fm.stringWidth(String.valueOf(enPila.getLast()));
+	    if (!enPila.isEmpty()) ancho = fm.stringWidth(String.valueOf(enPila.get(enPila.size()-1)));
 	    int altoTexto = fm.getHeight();
 	    
 	   
@@ -71,7 +73,7 @@ public class PanelPila extends JPanel {
 		    	  g2d.setStroke(new BasicStroke(4));
 		    }
 		    //laterales
-		    g2d.draw(new Line2D.Double(puntoXIzquierda, FondoY-((i-1)*altura) ,centroIzquierdaX + 7*margen,FondoY-((i)*altura)));
+		    g2d.draw(new Line2D.Double(puntoXIzquierda, FondoY-((i-1)*altura) ,puntoXIzquierda,FondoY-((i)*altura)));
 		    
 		    g2d.draw(new Line2D.Double(puntoXDerecha ,FondoY-((i-1)*altura) ,puntoXDerecha,FondoY-((i)*altura)));
 	    	

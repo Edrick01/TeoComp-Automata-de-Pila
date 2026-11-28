@@ -35,12 +35,15 @@ public class VistaPrincipal extends JFrame {
 	private JPanel contentPane;
 	private JTextField cadenaText;
 	private JButton btnSiguiente;
+	private JButton btnSalir;
 	private JLabel lblEstadoCadena;
 	private JButton btnLeerCadena;
 	private JPanel panelAutomata;
 	private JPanel panelPila;
 	private JLabel lblEstadoActual;
 	private JLabel lblCadenaRestante;
+	private JTable tablaPasos;
+	private DefaultTableModel modeloTabla;
 	/**
 	 * Launch the application.
 	 */
@@ -61,8 +64,9 @@ public class VistaPrincipal extends JFrame {
 	 * Create the frame.
 	 */
 	public VistaPrincipal() {
+		setTitle("Automata de Pila");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 988, 589);
+		setBounds(100, 100, 1150, 589);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -93,7 +97,7 @@ public class VistaPrincipal extends JFrame {
 		
 		JPanel panelCuadroDinamico = new JPanel();
 		contentPane.add(panelCuadroDinamico, BorderLayout.CENTER);
-		panelCuadroDinamico.setLayout(new BorderLayout(0, 0));
+		panelCuadroDinamico.setLayout(new BorderLayout(10, 0));
 		JPanel panelCadenasEstados = new JPanel();
 		panelCadenasEstados.setBorder(new EmptyBorder(10, 0, 10, 0));
 		panelCuadroDinamico.add(panelCadenasEstados, BorderLayout.NORTH);
@@ -106,7 +110,7 @@ public class VistaPrincipal extends JFrame {
 		
 		JLabel lblEstado = new JLabel("Estado");
 		lblEstado.setHorizontalAlignment(SwingConstants.CENTER);
-		panelCadenasEstados.setLayout(new GridLayout(4, 4, 10, 10));
+		panelCadenasEstados.setLayout(new GridLayout(2, 2, 10, 10));
 		panelCadenasEstados.add(lblPorleer);
 		panelCadenasEstados.add(lblCadenaRestante);
 		panelCadenasEstados.add(lblEstado);
@@ -115,6 +119,20 @@ public class VistaPrincipal extends JFrame {
 		lblEstadoActual.setHorizontalAlignment(SwingConstants.CENTER);
 		panelCadenasEstados.add(lblEstadoActual);
 		panelCadenasEstados.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{lblPorleer, lblCadenaRestante, lblEstado, lblEstadoActual}));
+		
+		//tabla dinamica para mostrar estado, por leer y pila
+		modeloTabla = new DefaultTableModel(new Object[]{"Estado", "Por leer", "Pila"}, 0) {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		tablaPasos = new JTable(modeloTabla);
+		tablaPasos.getTableHeader().setReorderingAllowed(false);
+		JScrollPane scrollTabla = new JScrollPane(tablaPasos);
+		scrollTabla.setPreferredSize(new Dimension(250, 0));
+		panelCuadroDinamico.add(scrollTabla, BorderLayout.WEST);
 		
 		JPanel panelPilaAutomata = new JPanel();
 		panelPila = new PanelPila();
@@ -137,6 +155,7 @@ public class VistaPrincipal extends JFrame {
 		panel_4.setLayout(new GridLayout(1, 3, 10, 0));
 		
 		btnSiguiente = new JButton("Siguiente");
+		btnSiguiente.setEnabled(false);
 		panel_4.add(btnSiguiente);
 		
 		lblEstadoCadena = new JLabel("Cadena en Espera");
@@ -144,7 +163,7 @@ public class VistaPrincipal extends JFrame {
 		lblEstadoCadena.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_4.add(lblEstadoCadena);
 		
-		JButton btnSalir = new JButton("Salir");
+		btnSalir = new JButton("Salir");
 		panel_4.add(btnSalir);
 
 	}
@@ -155,6 +174,10 @@ public class VistaPrincipal extends JFrame {
 
 	public JButton getBtnSiguiente() {
 		return btnSiguiente;
+	}
+
+	public JButton getBtnSalir() {
+		return btnSalir;
 	}
 
 	public JLabel getLblEstadoCadena() {
@@ -201,10 +224,20 @@ public class VistaPrincipal extends JFrame {
 		}
 		else {
 			lblEstadoCadena.setForeground(new Color(200, 0, 0));
-			lblEstadoCadena.setText("La cadena que ingreso contiene caracteres\nque no perteneces al alfabeto");
+			lblEstadoCadena.setText("<html><center>La cadena que ingreso contiene caracteres<br>que no pertenecen al alfabeto</center></html>");
 		}
 	}
-	public void agregarElementoTabla(Character elemento, boolean sacar) {
+	//agrega una fila con el paso actual y baja el scroll
+	public void agregarElementoTabla(String estado, String porLeer, String pila) {
+		modeloTabla.addRow(new Object[]{estado, porLeer, pila});
+		int ultimaFila = modeloTabla.getRowCount() - 1;
+		if (ultimaFila >= 0) {
+			tablaPasos.scrollRectToVisible(tablaPasos.getCellRect(ultimaFila, 0, true));
+		}
+	}
+	//limpia las filas de la tabla
+	public void limpiarTabla() {
+		modeloTabla.setRowCount(0);
 	}
 	
 }

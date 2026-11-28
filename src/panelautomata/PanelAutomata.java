@@ -218,6 +218,7 @@ public class PanelAutomata extends JPanel {
 	public void dibujarTransicion(Graphics2D g2d,String etiquetas,Character estado, int x, int y, int radio  ) {
 		Character aux = etiquetas.charAt(0);
 		Character aux2 = etiquetas.charAt(1);
+		g2d.setColor(Color.BLACK);
 		if (estado.equals(estadoActual) && (aux.equals(this.etiqueta) || aux2.equals(this.etiqueta))) {
 			//System.out.println("estados: trancisiondibujo  " + estado + "<- estado de la etiqueta " + estadoActual+ "<-EstadoActual");
 			double pulso = (Math.sin(fase*2.0) + 1.0) / 2.0;
@@ -226,30 +227,37 @@ public class PanelAutomata extends JPanel {
 			if (enError) {
 				g2d.setColor(errorFuerte); 
 			}
+			else {
+				g2d.setColor(estadoFuerte);
+			}
 		}
 		
-		g2d.setColor(Color.BLACK);
 		g2d.drawArc(x-27,y-2*radio-8,55,90,-10,200);
 		g2d.drawLine(x+20, y-radio, x+28,y-15 );
 		g2d.drawLine(x+28, y-15, x+35,y-radio );
+		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(2));
 
 	}
 	
 // x1 centro S
 	public void dibujartransicionSF(Graphics2D g2d,int x1, int y,int radio,int x2) {
+		g2d.setColor(Color.BLACK);
 		if (etiqueta.equals('v')) {
             double pulso = (Math.sin(fase*2.0) + 1.0) / 2.0;
             float grosor = 2.0f + (float) (pulso * 2.4f);
             g2d.setStroke(new BasicStroke(grosor));
 			if (enError) {
 				g2d.setColor(errorFuerte); 
+			}
+			else {
+				g2d.setColor(estadoFuerte);
 			}	
 		}
-		g2d.setColor(Color.BLACK);
 		g2d.drawLine(x1+radio,y, x2-radio, y);
 		g2d.drawLine(x2-radio-10, y-10, x2-radio, y);
 		g2d.drawLine(x2-radio-10, y+10, x2-radio, y);
+		g2d.setColor(Color.BLACK);
 		g2d.setStroke(new BasicStroke(2));
 
 	}
